@@ -1,0 +1,27 @@
+First time installation for Firebase
+
+Go to Node.js official site and download the LTS version. This will automatically install both Node.js and npm.
+
+Once installed, you can install Firebase CLI globally by running the following command:
+
+
+npm install -g firebase-tools
+
+This will install the Firebase CLI so that you can use the firebase command in your terminal.
+
+🔄 Step 2: Verify the Installation
+After installation, you can check that it worked by running:
+
+
+firebase --version
+
+If everything’s set up properly, you should see the version number of Firebase CLI.
+
+💡 Step 3: Log in and Deploy
+After installing the CLI, log in to your Firebase account:
+
+firebase login
+
+Then you can proceed with the deploy:
+
+firebase deploy --only hosting
