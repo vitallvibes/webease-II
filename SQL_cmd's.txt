@@ -1,0 +1,55 @@
+-- 1. Writers table
+CREATE TABLE IF NOT EXISTS writers (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  intro TEXT,
+  photo TEXT
+);
+
+-- 2. Books table
+CREATE TABLE IF NOT EXISTS books (
+  id SERIAL PRIMARY KEY,
+  book_name TEXT NOT NULL,
+  writer_id INTEGER REFERENCES writers(id) ON DELETE CASCADE
+);
+
+-- 3. Awards table
+CREATE TABLE IF NOT EXISTS awards (
+  id SERIAL PRIMARY KEY,
+  award_name TEXT NOT NULL,
+  writer_id INTEGER REFERENCES writers(id) ON DELETE CASCADE
+);
+
+CREATE POLICY "Allow public upload"
+ON storage.objects
+FOR INSERT
+TO public
+WITH CHECK (bucket_id = 'books-pdfs');
+
+NOTIFY pgrst, 'reload schema';
+
+--For writers table
+CREATE POLICY "Allow public read" ON writers FOR SELECT TO public USING (true);
+
+-- For books table
+CREATE POLICY "Allow public read" ON books FOR SELECT TO public USING (true);
+
+-- For awards table
+CREATE POLICY "Allow public read" ON awards FOR SELECT TO public USING (true);
+
+-- For writers table
+CREATE POLICY "Allow public read" ON writers FOR SELECT TO public USING (true);
+
+-- For books table
+CREATE POLICY "Allow public read" ON books FOR SELECT TO public USING (true);
+
+-- For awards table
+CREATE POLICY "Allow public read" ON awards FOR SELECT TO public USING (true);
+
+UPDATE books SET writer_id = 1 WHERE writer_id IS NULL AND EXISTS (SELECT 1 FROM writers WHERE id = 1);
+UPDATE awards SET writer_id = 1 WHERE writer_id IS NULL AND EXISTS (SELECT 1 FROM writers WHERE id = 1);
+
+
+TRUNCATE TABLE writers RESTART IDENTITY CASCADE;
+TRUNCATE TABLE books RESTART IDENTITY CASCADE;
+TRUNCATE TABLE awards RESTART IDENTITY CASCADE;
